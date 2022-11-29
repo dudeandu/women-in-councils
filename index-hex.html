@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Toronto Star</title>
+    <script src="https://misc.thestar.com/interactivegraphic/libraries/d3v4.min.js"></script>
+    <script src="https://misc.thestar.com/interactivegraphic/libraries/topojson.v2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+    <script src="https://kit.fontawesome.com/3a966a89df.js" crossorigin="anonymous"></script>
+
+    <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
+
+    <link href='https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700' rel='stylesheet' type='text/css'>
+
+<style>
+
+    body {
+      margin:0;
+      background-color: #F8F8F8;
+      /*padding: 0 25px 25px;*/
+
+    }
+
+     .clearfix:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+      }
+        
+    .clearfix {
+        display: block;
+      }
+
+
+.graphic-wrapper {
+  margin: 0 auto;
+  max-width: 1032px; }
+
+.graphic-top {
+  padding: 8px 0; }
+  @media (min-width: 526px) {
+    .graphic-top {
+      padding: 12px 0; } }
+  @media (min-width: 592px) {
+    .graphic-top {
+      padding: 16px 0; } }
+
+h2.graphic-top__graphic-hed {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.3em;
+  font-family: "Merriweather Sans", Helvetica, Arial, sans-serif;
+  color: #333;
+  webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+  text-rendering: optimizeLegibility;
+  padding-bottom: 4px; }
+  @media (min-width: 526px) {
+    h2.graphic-top__graphic-hed {
+      font-size: 22px; } }
+  @media (min-width: 592px) {
+    h2.graphic-top__graphic-hed {
+      font-size: 24px; } }
+
+h3.graphic-top__graphic-dek {
+  font-size: 16px;
+  line-height: 1.3em;
+  font-weight: 400;
+  margin: 0;
+  font-family: "TorstarTextO3", Times, serif;
+  color: #666;
+  webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+  text-rendering: optimizeLegibility; }
+  @media (min-width: 526px) {
+    h3.graphic-top__graphic-dek {
+      font-size: 17px; } }
+  @media (min-width: 592px) {
+    h3.graphic-top__graphic-dek {
+      font-size: 18px; } }
+
+.graphic-bottom {
+  margin: 12px 0 0;
+  padding: 6px 0 16px;
+  border-top: 1px solid #cfcfcf; }
+  .graphic-bottom:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0; }
+  @media (min-width: 526px) {
+    .graphic-bottom {
+      padding-top: 7px; } }
+  @media (min-width: 592px) {
+    .graphic-bottom {
+      padding-top: 8px; } }
+
+  .graphic-top__graphic-instructions {
+    margin:4px 0 0;
+    font-size: 12px;
+    line-height: 1.2em;
+    font-weight: 400;
+    font-family: "Merriweather Sans", Helvetica, Arial, sans-serif;
+    color: #999;
+    font-style: italic; }
+    @media (min-width: 529px) {
+      .graphic-top__graphic-instructions {
+        font-size: 13px; } }
+    @media (min-width: 620px) {
+      .graphic-top__graphic-instructions {
+        font-size: 14px; } }
+    .graphic-top__graphic-instructions__desktopspan {
+      display: none;
+    }
+     @media (min-width: 620px) {
+       .graphic-top__graphic-instructions__desktopspan {
+        display: inline; }
+         .graphic-top__graphic-instructions__mobilespan {
+        display: none; } 
+
+
+      }
+
+
+p.graphic-bottom__graphic-source {
+  margin: 0;
+  padding-bottom: 5px;
+  font-size: 12px;
+  line-height: 1.3em;
+  font-family: "Merriweather Sans", Helvetica, Arial, sans-serif;
+  color: #aaaaaa;
+  text-rendering: optimizeLegibility;
+  text-transform: uppercase; }
+  @media (min-width: 526px) {
+    p.graphic-bottom__graphic-source {
+      max-width: 65%;
+      vertical-align: top;
+      float: left; } }
+p.graphic-bottom__graphic-byline {
+  margin: 0;
+  padding-bottom: 5px;
+  font-size: 12px;
+  line-height: 1.3em;
+  font-family: "Merriweather Sans", Helvetica, Arial, sans-serif;
+  color: #aaaaaa;
+  text-transform: uppercase;
+  text-rendering: optimizeLegibility; }
+  @media (min-width: 526px) {
+    p.graphic-bottom__graphic-byline {
+      text-align: right;
+      max-width: 30%;
+      vertical-align: top;
+      float: right; } }
+p.graphic-bottom__notetext {
+  margin: 0;
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.3em;
+  padding-bottom: 8px;
+  color: #666;
+  font-family: "TorstarTextO3", Times, serif;
+  webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+  text-rendering: optimizeLegibility; }
+  @media (min-width: 526px) {
+    p.graphic-bottom__notetext {
+      font-size: 17px; } }
+  @media (min-width: 592px) {
+    p.graphic-bottom__notetext {
+      font-size: 18px; } }
+
+            .hideThis {
+              display: none;
+            }
+
+            svg {
+              /*padding: 10px*/
+              /*margin: 0;*/
+              margin: 0 0 0 -15px;
+            }
+
+            #chart {
+              margin-top: 20px;
+              display: grid;
+              grid-gap: 1px;
+
+              grid-template-columns: repeat(6,16.6%);
+              grid-template-rows: 25% 100px auto;
+              /*overflow: hidden;*/
+
+            }
+
+            @media (max-width: 560px) {
+              #chart {
+                display: flex;
+                flex-wrap: wrap;
+              }
+
+              svg {
+                flex-basis: 100%;
+                margin-top: 0;
+
+                margin: 0;
+              }
+            }
+
+            .label, .annotation {
+              text-align: left;
+              font-family: helvetica neue, helvetica, arial, sans-serif;
+              font-size: 14px;
+              color: #CCC;
+              /*padding: 5px 0 10px;      */
+            }
+
+            .annotation {
+              text-transform: uppercase;
+              font-size: 12px;
+              font-weight: 500;
+            }
+            .textOverlay{
+              background: black;
+              padding:10px;
+              fill: black;
+            }
+
+            .annotationline, 
+            .rectOverlay,
+            .textOverlay,
+            .tooltipwrapper,
+            .tooltipwrapper,
+            .squarepointer,
+            .annotationcircle,
+            .fiftypercentline {
+              pointer-events: none;
+            }
+
+            .thisHex {
+              stroke: black !important;
+              z-index: 10 !important;
+              stroke-width: 3px;
+            }
+
+            .selected {
+              z-index: 0;
+            }
+
+          .outerHex {
+              /*fill: black !important;*/
+              /*opacity: 0.7 !important;*/
+          } 
+
+            #hexBox_0, #hexBox_1, 
+            #hexBox_2, #hexBox_3, 
+            #hexBox_4, #hexBox_5, 
+            #hexBox_6, #hexBox_7, 
+            #hexBox_8, #hexBox_9,
+            #hexBox_10, #hexBox_11 {
+              /*background: tomato;*/
+            }
+          
+            .AB-container {
+              grid-column-start: 5;
+              grid-row: 1 / 2;
+            }
+
+            .BC-container {
+              grid-column-start: 5;
+              grid-row: 2 / 8;
+            }
+
+            .MB-container {
+              grid-column-start: 1;
+              grid-row: 8 / 10;
+            }
+
+            .NB-container {
+              grid-column-start: 5;
+              grid-row: 8 / 10;
+            }
+
+            .NL-container {
+              grid-column-start: 3;
+              grid-row: 9;
+            }
+
+            .NS-container {
+              grid-column-start: 3;
+              grid-row: 4 / 9;
+            }
+
+            .NWT-container {
+              grid-column-start: 5;
+              grid-row: 12;
+            }
+
+            .ON-container {
+              grid-column-start: 1;
+              grid-row: 1 / 9;
+            }
+
+            .PEI-container {
+              grid-column-start: 3;
+              grid-row: 12;
+            }
+
+            .QC-container {
+              grid-column-start: 3;
+              grid-row: 1 / 5;
+            }
+
+            .SK-container {
+              grid-column-start: 1;
+              grid-row: 12;
+            }
+
+            .YT-container {
+              grid-column-start: 6;
+              grid-row: 12;
+            }
+
+            #closebox{
+              top: 0;
+              left: 0;
+              width: 100vw;
+              height: 100vh;
+              position: absolute;
+              z-index: -30;
+              /*max-width: 1032px;*/
+              margin: 0 auto;
+            }
+
+            /* ----------------------------------- tooltip style -------------------------------------------------------*/
+            .tooltipwrapper {
+              display:none;
+            }
+
+            .tooltipwrapper {
+              position: absolute;
+              top:0;
+              left:0;
+              font-family: helvetica neue, helvetica, arial, sans-serif;
+              /*width: 100px;*/
+              background: #E6E6E6;
+              /*background: tomato;*/
+              margin: 0 auto;
+              padding: 10px;
+              max-height: 200px;
+              overflow: scroll;
+              /*-webkit-overflow-scrolling: touch;*/
+              z-index: 2;
+
+              overflow-y: auto;
+              overflow-x: auto;
+
+              border-radius: 5px;
+
+              opacity: 0.9;
+            }
+
+            .squarepointer {
+              position:absolute;
+              height: 20px;
+              width: 20px;
+              transform: rotate(45deg);
+              -ms-transform: rotate(45deg); /* IE 9 */
+              -webkit-transform: rotate(45deg); /* Safari and Chrome */
+              background: #E6E6E6;
+              /*background: tomato;*/
+              z-index: 1;
+              display: none;
+            }
+
+            #closebutton {
+              float:right;
+              margin-left: 5px;
+              cursor: pointer;
+              color: #CCC;
+              opacity: 1;
+
+            }
+
+            p.thisCity, 
+            p.percentWomen  {
+              margin: 0;
+            }
+
+            .placebox {
+              width: 100%;
+              /*padding-bottom: 16px;*/
+              /*margin-bottom: 16px;*/
+              /*border-bottom: 1px solid #cfcfcf;*/
+            }
+
+            .placebox p {
+              color: #009988;
+              font-size: 16px;
+              line-height: 1em;
+              letter-spacing: 0.5px;
+              text-transform: uppercase;
+              max-width: 150px;
+              opacity: 1;
+              /*font-family: "Merriweather Sans", Helvetica, Arial, sans-serif;*/
+            }
+
+            p.percentWomen {
+              text-align: left;
+              font-size: 22px;
+              /*font-weight: 600;*/
+              color: #404040;
+                opacity: 1;
+            }
+
+            /* ----------------------------------- tooltip style END-------------------------------------------------------*/
+
+            .legend-bottom {
+              text-align: center;
+               margin: 15px 0 0;
+               font-family: Helvetica, Arial, sans-serif;
+            }
+
+            .graphic-legend {
+              width: 360px;
+              vertical-align: top;
+             /* margin-bottom: 15px;*/
+              display: none;
+            }
+
+            .active-legend {
+              display: inline-block;
+            }
+
+            .legendheading {
+              text-align: center;
+              margin: 0 auto;
+              padding-bottom: 6px;
+              color: #444;
+              font-size: 14px;
+              line-height: 1.1em;
+              max-width: 360px;
+            }
+
+            .legendbox-container-1 {
+              width: 360px;
+              margin: 0 auto;
+            }
+
+            .legendbox-container-2 {
+              width: 360px;
+              margin: 0 auto;
+            }
+
+            .legendbox {
+              width: 34px;
+              height: 15px;
+              float: left;
+              opacity: 1;
+            }
+
+            .emptylegendbox {
+              width: 20px;
+              height: 15px;
+              float: left;
+              opacity: 1;
+            }
+
+
+            #legendbox1 {
+              background-color: #EE8833;
+            }
+
+            #legendbox2 {
+              background-color: #E79652;
+            }
+
+            #legendbox3 {
+              background-color: #E0A370;
+            }
+
+            #legendbox4 {
+              background-color: #DAB18F;
+            }
+
+            #legendbox5 {
+              background-color: #D3BEAD;
+            }
+
+            #legendbox6 {
+              background-color: #CCCCCC;
+            }
+
+            #legendbox7 {
+              background-color: #99BFBB;
+            }
+
+            #legendbox8 {
+              background-color: #66B3AA;
+            }
+
+            #legendbox9 {
+              background-color: #33A699;
+            }
+
+            #legendbox10 {
+              background-color: #009988;
+            }
+
+            .legendnumber-container-1 {
+              margin: 5px auto 0;
+              /*padding-left: 20px;*/
+            }
+
+            .legendnumber {
+              width: 35px;
+              float: left;
+              color: #555;
+              font-size: 14px;
+              line-height: 1em;
+              margin: 0;
+            }
+
+            #legendnumber0 {
+              width: 40px;
+              float: left;
+              color: #555;
+              font-size: 14px;
+              line-height: 1em;
+              margin: 0;
+              margin-right: 30px;
+            }
+
+            @media (max-width: 420px) {
+              .graphic-legend,
+              .legendheading,
+              .legendbox-container-1,
+              .legendbox-container-2 {
+                width: 100%;
+              }
+
+              .legendnumber-container-1 {
+                margin: 5px auto 0;
+                /*padding-left: 5%;*/
+              }
+
+              .legendbox,
+              .legendnumber {
+                width: calc( 100% / 11 ) ;
+                font-size: 10px;
+              }
+
+              #legendnumber0 {
+                margin-right: 30px;
+                font-size: 10px;
+              }
+
+              .legendnumber {
+                /*margin-left: 0.5%;*/
+              }
+
+              .legend-bottom, .graphic-top, .graphic-bottom {
+                padding: 0 16px;
+              }
+
+
+            }
+
+            @media (min-width: 560px) {
+
+              .legend-bottom, .graphic-top, .graphic-bottom {
+                /*padding: 0 100px;*/
+                max-width: 680px;
+                margin: 0 auto;
+              }
+
+
+            }
+
+
+
+
+</style>
+</head>
+<body>
+  <div class="graphic-wrapper">
+    <div class="graphic-top">
+        <h2 class="graphic-top__graphic-hed">Women on council</h2>
+        <h3 class="graphic-top__graphic-dek">A gender analysis of the country’s 441 largest municipalities (those with a population of 9,000 or more) reveals only 53 — or about 12 per cent — have a council on which women equal or outnumber men.</h3>
+
+        <h3 class="graphic-top__graphic-instructions"><span class="graphic-top__graphic-instructions__desktopspan">Hover</span><span class="graphic-top__graphic-instructions__mobilespan">Tap</span> on hexagons to show each municipality's percentage.<span class="graphic-top__graphic-instructions__desktopspan"></h3>
+    </div>
+
+
+
+    <div class="graphic">
+            <div id="closebox"></div>
+
+
+              <div class="legend-bottom">
+                <div class="graphic-legend active-legend" id="graphic-legend-1">
+                  <p class="legendheading">Percentage of women on council</p>
+                
+                  <div class="legendbox-container-1 clearfix">
+                    
+                    <div class="legendbox" id="legendbox1"></div>
+                    <div class="emptylegendbox"></div>
+                    <div class="legendbox" id="legendbox2"></div>
+                    <div class="legendbox" id="legendbox3"></div>
+                    <div class="legendbox" id="legendbox4"></div>
+                    <div class="legendbox" id="legendbox5"></div>
+                    <div class="legendbox" id="legendbox6"></div>
+                    <div class="legendbox" id="legendbox7"></div>
+                    <div class="legendbox" id="legendbox8"></div>
+                    <div class="legendbox" id="legendbox9"></div>
+                    <!-- <div class="emptylegendbox"></div> -->
+                    <div class="legendbox" id="legendbox10"></div>
+                  </div>
+                    <div class="legendnumber-container-1 clearfix">
+                    <p class="legendnumber" id="legendnumber0">0%</p>
+                    <p class="legendnumber" id="legendnumber1">10%</p>
+                    <p class="legendnumber" id="legendnumber2">20%</p>
+                    <p class="legendnumber" id="legendnumber3">30%</p>
+                    <p class="legendnumber" id="legendnumber4">40%</p>
+                    <p class="legendnumber" id="legendnumber5">50%</p>
+                    <p class="legendnumber" id="legendnumber6">60%</p>
+                    <p class="legendnumber" id="legendnumber7">70%</p>
+                    <p class="legendnumber" id="legendnumber8">80%</p>
+                    
+                  </div>
+                </div>
+              </div>
+
+
+            
+            <div id="chart"></div>
+
+            <div id="toolTipContent" class="tooltipwrapper clearfix">
+                <div id="closebutton"><i class="icon fas fa-times fa-lg"></i></div>
+              </div>
+              <div class="squarepointer"></div>
+
+    </div>
+
+    <div class="graphic-bottom">
+        <!-- <p class="graphic-bottom__notetext" id="notetext">Note</p> -->
+        <p class="graphic-bottom__graphic-source" id="source">Source: Canadian Municipal Barometer</p>
+        <p class="graphic-bottom__graphic-byline" id="byline">Star graphic</p>
+    </div>
+  </div>
+
+
+
+
+    <script>
+
+        var colour = d3.scaleThreshold()
+        .domain([0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7,0.8])
+        // .domain([0.01, 0.2, 0.35, 0.45, 0.55, 0.60, 0.70, 0.75])
+        // .range(["#FF6347", "#F27D68", "#E6988A", "#D9B2AB", "#CCCCCC","#9EB2BE","#7199AF","#437FA1", "#156592"]);
+        // .range(["#EE8833", "#E59959", "#DDAA80", "#D5BBA6", "#CCCCCC","#99BFBB","#66B3AA","#33A699", "#009988"]);
+        .range(["#EE8833", "#E79652", "#E0A370", "#DAB18F", "#D3BEAD","#CCCCCC","#99BFBB","#66B3AA", "#33A699", "#009988"]);
+
+      var provincessList = {
+            province:[
+              ["Alta.","Alberta","AB"],
+              ["B.C.","British Coulmbia","BC"],
+              ["Man.","Manitoba","MB"],
+              ["N.B.","New Brunswick","NB"],
+              ["N.L.","Newfoundland and Labrador","NL"],
+              ["N.S.","Nova Scotia","NS"],
+              ["N.W.T.","Northwest Territories","NWT"],
+              ["Ont.","Ontario","ON"],
+              ["P.E.I.","Prince Edward Island","PEI"],
+              ["Que.","Quebec","QC"],
+              ["Sask.","Saskatchewan","SK"],
+              ["Y.T.","Yukon","YT"]
+             ]
+        }; 
+
+        var highlightedCities = [
+            "edmonton",
+            "victoria",
+            "winnipeg",
+            "fredericton",
+            "toronto",
+            "mississauga",
+            "quebec city",
+            "whitehorse",
+            "st. john's",
+            "halifax",
+            "charlottetown",
+            "regina",
+            "yellowknife"
+          ]
+
+      var CBMdata;
+
+          var citiesArray = [];
+          var places = [];
+
+
+
+      var MapColumns = 0;
+      var MapRows = 0;
+      var coordinateList = [];
+      var coordinateListForNodes = [];
+
+        var neighbourNodes = [];
+        var nodesdValue = [];
+
+      var checkchechcheckermachine = 0;
+
+      var thisProvinceID;
+
+      var margin;
+      var hexRadius;
+
+
+      var thisProvince;
+      var changeCounter = 0;
+
+
+            var smallerfirst = function(a,b,c) {
+              if (a < b) {
+                return [a,b,c]
+              } else {
+                return [b,a,c]
+              }
+            }
+
+            var checkID = function(x,min,max){
+              if (x >= min && x < max){
+                return true
+              } else {
+                return false
+              }
+            }
+
+        d3.csv('data.csv', function(data) {
+            
+      var dataBuilder = function(){
+            CBMdata = data;
+
+
+            for (var index = 0; index < data.length; index++) {
+              places.push(data[index].place)
+            }
+
+            for (var cA = 0; cA < highlightedCities.length; cA++){
+              var prov = data[places.indexOf(highlightedCities[cA])].province;
+              var provNumbr = 0;
+              for (var thisprovNumbr = 0; thisprovNumbr < provincessList.province.length; thisprovNumbr++){
+                if (provincessList.province[thisprovNumbr][0] == prov) {
+                  provNumbr = thisprovNumbr;
+                }
+              }
+              citiesArray.push([places.indexOf(highlightedCities[cA]), data[places.indexOf(highlightedCities[cA])].place, prov, provNumbr])
+            }
+
+            // console.log(citiesArray)
+
+          
+          var color = []
+
+        //SVG sizes and margins
+        margin = {
+            top: 40,
+            right: 20,
+            bottom: 30,
+            left: 50
+        },
+        width = $(window).width()
+        height = $(window).height()-200;
+
+            // console.log("width: " + width)
+        // //The number of columns and rows of the heatmap
+
+        if (width > 560) {
+            hexRadius = 15
+        } else if (width <= 560 && width > 300) {
+            hexRadius = 10
+        } else if (width <= 300 ) {
+            hexRadius = 5
+        }
+
+
+        // go through data once to see how many different provinces and territories there are
+        provinceArray = [[data[0].province,0,0]];
+        thisProvince = data[0].province;
+        changeCounter = 0;
+        for (var i = 1; i < data.length; i++) {
+          if (thisProvince != data[i].province) {
+            changeCounter++
+            provinceArray.push([data[i].province,i,changeCounter]);
+          }
+          thisProvince = data[i].province;
+        }
+
+            // defines how many rows each province has and adds the number at the end of provinceArray
+            // the row number of the hex os assigned at the end
+        for (var i = 0; i < provinceArray.length; i++) {
+          if (i < provinceArray.length-1) {
+            provinceArray[i].push(provinceArray[i+1][1]-provinceArray[i][1])
+          } else {
+            provinceArray[i].push(data.length - provinceArray[i][1])
+          }
+        }
+          // console.log(provinceArray)
+
+      };
+
+      
+
+      //creating a loop tha follows the provinceArray to build each box properly
+      var makeHexGraph = function() {
+
+        dataBuilder()
+
+
+        $('#chart').html('')
+
+        coordinateList = [];
+
+        var isFiftydone = false;
+        var thisisFiftyRow = null;
+
+        var rowID = 0
+        for (var i = 0; i < provinceArray.length; i++) {
+
+          // console.log(provinceArray[i][0])
+          // build each box in here 
+
+            // get the data from ech province, and return it to an array
+            var dataGrabber = function () {
+              var thisRow = [];
+              for (var j = provinceArray[i][1]; j < provinceArray[i][1]+provinceArray[i][3]; j++) {
+                 thisRow.push(data[j])
+              }
+              return thisRow
+            }
+
+            var useThisData = dataGrabber();
+          var divideByThis = 4;
+
+              if ($(window).width() > 560) {
+              //  MapColumns = 11;
+                divideByThis = 3.2
+              } else if ($(window).width() <= 560 && $(window).width() > 300) {
+              //  MapColumns = 12;
+                margin.top = 30
+                divideByThis = 1
+              } else if ($(window).width() <= 300 ) {
+              //  MapColumns = 25
+                margin.top = 20
+                divideByThis = 1
+              }
+
+          width = ($('#chart').width() - margin.right - margin.left )/ divideByThis  ;
+
+          if (provincessList.province[i][1] == 'Northwest Territories' || provincessList.province[i][1] == 'Yukon' ) {
+            width = width / 2.5
+          }
+
+            MapColumns = Math.abs(Math.ceil(width / (hexRadius * 2) ));
+
+          // MapColumns = 9;
+          MapRows = Math.ceil(useThisData.length / MapColumns);
+
+          // asign the reminder number of empty hex of each province's to a variable
+          provinceArray[i].push(MapRows*MapColumns - provinceArray[i][3])
+
+
+          // console.log(provinceArray)
+
+            // console.log(width, MapColumns)
+          // height = $(window).height() / provinceArray[i][3];
+          height = Math.ceil(useThisData.length / MapColumns)*hexRadius*1.5;
+
+
+
+              // console.log(useThisData.length, Math.ceil(useThisData.length / MapColumns), Math.ceil(useThisData.length / MapColumns)*hexRadius*1.5);
+
+
+          var svg = d3.select("#chart").append("svg")
+                            .attr("id", "hexBox_"+i)
+                            // .attr("class", "hex-container")
+                            .attr("class", function(){
+                              for (var x = 0; x < provincessList.province.length; x++) {
+                                if (provincessList.province[x][0] == useThisData[0].province)
+                                return "hex-container " + provincessList.province[x][2] + "-container";
+                              }
+                            })
+                            .attr("width", width + margin.left + margin.right)
+                            .attr("height", height + margin.top + margin.bottom)
+                            // .style("background",function(){
+                            //  return color[i]
+                            // })
+                            // .style("border","1px solid yellow")
+                            .append("g")
+                            .attr("class","groupchild_"+i)
+                            .attr("data-id", function (d) {
+                              return i
+                            })
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+          //Calculate the center position of each hexagon
+          var points = [];
+          for (var row = 0; row < MapRows; row++) {
+              for (var col = 0; col < MapColumns; col++) {
+                  var x = hexRadius * col * Math.sqrt(3)
+                  //Offset each uneven row by half of a "hex-width" to the right
+                  if(row%2 === 1) x += (hexRadius * Math.sqrt(3))/2
+                  var y = hexRadius * row * 1.5
+                  points.push([x,y,row,col])
+                  coordinateListForNodes.push([x,y,row,col])
+              }//for j
+          }//for i
+
+              coordinateList.push(points)
+              // console.log(coordinateList)
+
+          // assign the coordinates to a global variable, so that it can be used by the border maker function
+            // console.log(useThisData)
+
+          // console.log(points)
+          var hexbin = d3.hexbin().radius(hexRadius);
+
+
+          // for (var j = provinceArray[i][1]; j < provinceArray[i][1]+provinceArray[i][3]; j++) {
+            // add each hexagon into each box in here 
+            thisSvg = "#hexBox_" + i + " g";
+
+          // console.log(thisSvg)
+
+            var drawHexagons = function() {
+                //Draw the hexagons
+                d3.select(thisSvg)
+                    .selectAll(".hexagon")
+                    .data(hexbin(points))
+                    .enter().append("path")
+                    .attr("class", "hexagon")
+                    .attr("d", function (d) {
+                        return "M" + d.x + "," + d.y + hexbin.hexagon();
+                    })
+                    .attr("stroke", "white")
+                    .attr("stroke-width", "1px")
+                    // .style("fill", "#E38F7D")
+                    .data(useThisData)
+                    .attr("class", function(d){
+                      if (d.place == 'toronto' 
+                        || d.place == 'vancouver' 
+                        || d.place == 'mississauga' 
+                        || d.place == 'montreal' 
+                        || d.place == 'hamilton' 
+                        || d.place == 'calgary' 
+                        || d.place == 'edmonton' 
+                        || d.place == 'halifax'
+                        || d.place == 'brampton'
+                        // || d.place == 'ottawa'
+                        || d.place == 'québec') 
+                      {
+                          return "hexagon highlight"
+                        } else {
+                          return "hexagon"
+                        }
+                    })
+                    .style("opacity",  function (d,i) {
+                        return 1;
+                    })
+                    .style("fill",  function (d,i) { 
+                        return colour(d.percent_women_on_council)
+                    })
+                    .attr("data-id", function (d,i) {
+                      return useThisData[i].rec
+                    })
+                    .attr("id", function(d,i) { 
+                      return "hex" + (useThisData[i].rec); 
+                    });
+
+                d3.selectAll(".hexagon")
+                  .classed('hideThis', function(d,i){
+                      if ($(this).attr('data-id') == undefined){
+                        // console.log($(this).attr('data-id'))
+                        return true;
+                      } else {
+                      return false;
+                      }
+                  })
+
+                d3.select(thisSvg).append("text")
+                    .attr("class", "label")
+                      .text(function() { 
+                        for (var x = 0; x < provincessList.province.length; x++) {
+                          if (provincessList.province[x][0] == useThisData[0].province)
+                          return provincessList.province[x][1]
+                        }
+                      })
+                      .attr("x",function() { 
+                        // return points[provinceArray[i][1]][0]; 
+                        return 0 - hexRadius;
+                      })
+                      .attr("y",function() { 
+                        return points[0][1] - (hexRadius * 1.5); 
+                      });
+
+
+
+    ////////////////////////////////////////////////                  
+    // NODE FINDER FUNCTION STARTS ////////////////
+                        // console.log(coordinateList)
+                    var totalNodes = 0;
+                    neighbourNodes = []
+
+
+                    var getComp = function() {
+                      var countComp = 0;
+                      for (var compCounter = 0; compCounter < i; compCounter++) {
+                        countComp += provinceArray[compCounter][4]
+
+                      }
+                      return countComp
+                    }
+
+                    // console.log(getComp(), provinceArray[i])
+
+                    for ( var k = 0; k < useThisData.length; k++) {
+
+                      var thisID = k
+                      // console.log(thisID)
+
+                      var selectedNodes = '';
+
+
+                        thisProvinceID = i
+                        thisIsTheDataRow = thisID + provinceArray[i][1];
+                        
+                      // console.log(coordinateList, thisProvinceID, thisIsTheDataRow)
+                        
+                        var thisCol = coordinateList[thisProvinceID][thisID][3];
+                        var thisRow = coordinateList[thisProvinceID][thisID][2];  
+
+                        var minID = provinceArray[thisProvinceID][1];
+                        var maxID = minID + provinceArray[thisProvinceID][3];
+                        
+                        var evenMachine = thisRow%2;
+                        // console.log(thisCol, MapColumns - 1, thisRow)
+
+                        var a, b, c, d, e, f = 0;
+                        a = parseInt(thisID) + 1;
+                        b = parseInt(thisID) + MapColumns + evenMachine;
+                        c = parseInt(thisID) + MapColumns - 1 + evenMachine;
+                        d = parseInt(thisID) - 1;
+                        e = parseInt(thisID) - MapColumns - 1 + evenMachine;
+                        f = parseInt(thisID) - MapColumns + evenMachine; 
+                        // console.log("thisID: " + thisID +  " a: " + a +  "  b: " + b +  "  c: " + c +  "  d: " + d +  "  e: " + e +  "  f: " + f )
+
+                      
+                      // console.log(coordinateList[i], thisID)
+                      // check for Province
+
+                      var percentCheck = function(y,z){
+                        var useThisrow = z + provinceArray[i][1];
+                        // console.log(z,useThisrow)
+                        if (data[y].percent_women_on_council >= 0.5 && data[useThisrow].percent_women_on_council < 0.5) {
+                          totalNodes++
+                          return true
+                        } else {
+                          return false
+                        }
+                      }
+
+                        if (thisCol == (MapColumns - 1)  && evenMachine != 1) {
+                          if (checkID(b+provinceArray[i][1],minID,maxID)) {
+                            if (percentCheck(thisIsTheDataRow,b)){
+                                // d3.select("#hex" + (b + provinceArray[i][1])).classed('outerHex',true)
+                                neighbourNodes.push([parseInt(thisIsTheDataRow),b + provinceArray[i][1],"b", i])
+                              }
+                            }
+                          if (checkID(f+provinceArray[i][1],minID,maxID)) {
+                            if (percentCheck(thisIsTheDataRow,f)){
+                                // d3.select("#hex" + (f + provinceArray[i][1])).classed('outerHex',true)
+                                neighbourNodes.push([parseInt(thisIsTheDataRow),f + provinceArray[i][1],"f", i])
+                              }
+                            }
+                        } else if (thisCol != MapColumns -1 ) {
+                        if (checkID(a+provinceArray[i][1],minID,maxID)) {
+                          if (percentCheck(thisIsTheDataRow,a)){
+                              // d3.select("#hex" + (a + provinceArray[i][1])).classed('outerHex',true)
+                              neighbourNodes.push([parseInt(thisIsTheDataRow),a + provinceArray[i][1],"a", i])
+                              }
+                            }
+                          if (checkID(b+provinceArray[i][1],minID,maxID)) {
+                            if (percentCheck(thisIsTheDataRow,b)){
+                                // d3.select("#hex" + (b + provinceArray[i][1])).classed('outerHex',true)
+                                neighbourNodes.push([parseInt(thisIsTheDataRow),b + provinceArray[i][1],"b", i])
+                              }
+                            }
+                          if (checkID(f+provinceArray[i][1],minID,maxID)) {
+                            if (percentCheck(thisIsTheDataRow,f)){
+                                // d3.select("#hex" + (f + provinceArray[i][1])).classed('outerHex',true)
+                                neighbourNodes.push([parseInt(thisIsTheDataRow),f + provinceArray[i][1],"f", i])
+                              }
+                            }
+                        } 
+
+                        if (thisCol == 0 && thisRow%2 != 0) {
+                          if (checkID(c+provinceArray[i][1],minID,maxID)) {
+                            if (percentCheck(thisIsTheDataRow,c)){
+                                // d3.select("#hex" + (c + provinceArray[i][1])).classed('outerHex',true)
+                                neighbourNodes.push([parseInt(thisIsTheDataRow),c + provinceArray[i][1],"c", i])
+                              }
+                            }
+                          if (checkID(e+provinceArray[i][1],minID,maxID)) {
+                            if (percentCheck(thisIsTheDataRow,e)){
+                                // d3.select("#hex" + (e + provinceArray[i][1])).classed('outerHex',true)
+                                neighbourNodes.push([parseInt(thisIsTheDataRow),e + provinceArray[i][1],"e", i])
+                              }
+                            }
+                        } else if (thisCol > 0 ){
+                          if (checkID(c+provinceArray[i][1],minID,maxID)) {
+                            if (percentCheck(thisIsTheDataRow,c)){
+                                // d3.select("#hex" + (c + provinceArray[i][1])).classed('outerHex',true)
+                                neighbourNodes.push([parseInt(thisIsTheDataRow),c + provinceArray[i][1],"c", i])
+                              }
+                            }
+                          if (checkID(d+provinceArray[i][1],minID,maxID)) {
+                            if (percentCheck(thisIsTheDataRow,d)){
+                                // d3.select("#hex" + (d + provinceArray[i][1])).classed('outerHex',true)
+                                neighbourNodes.push([parseInt(thisIsTheDataRow),d + provinceArray[i][1],"d", i])
+                              }
+                            }
+                          if (checkID(e+provinceArray[i][1],minID,maxID)) {
+                            if (percentCheck(thisIsTheDataRow,e)){
+                                // d3.select("#hex" + (e + provinceArray[i][1])).classed('outerHex',true)
+                                neighbourNodes.push([parseInt(thisIsTheDataRow),e + provinceArray[i][1],"e", i])
+                            }
+                          }
+                        }
+
+                    }
+
+
+              ////////////////////////////////////////////////                  
+              // NODE FINDER FUNCTION ENDS ////////////////
+                      
+              //////////////////////////////
+                // BORDR MAKER STARTS
+
+                            //Initiate some variables
+                            var Sqr3 = 1/Math.sqrt(3);
+                            var lineData = [];
+                            var Node1,
+                                Node2,
+                                Node1_xy,
+                                Node2_xy,
+                                P1,
+                                P2;
+
+                            for (var thisNode = 0; thisNode < neighbourNodes.length; thisNode++) {
+
+
+                                Node1 = neighbourNodes[thisNode][0];
+                                Node2 = neighbourNodes[thisNode][1];
+                          
+                                Node1_xy = [points[Node1-provinceArray[i][1]][0],points[Node1-provinceArray[i][1]][1]];
+                                Node2_xy = [points[Node2-provinceArray[i][1]][0],points[Node2-provinceArray[i][1]][1]];
+
+                                //P2 is the exact center location between two nodes
+                                P2 = [(Node1_xy[0] + Node2_xy[0])/2, (Node1_xy[1] + Node2_xy[1])/2]; //[x2,y2]
+                                P1 = Node1_xy; //[x1,x2]
+
+                                //A line segment will be drawn between the following two coordinates
+                                lineData.push([(P2[0] + Sqr3*(P1[1] - P2[1])),
+                                               (P2[1] + Sqr3*(P2[0] - P1[0]))]); //[x3_top, y3_top]
+                                lineData.push([(P2[0] + Sqr3*(P2[1] - P1[1])),
+                                               (P2[1] + Sqr3*(P1[0] - P2[0]))]); //[x3_bottom, y3_bottom]
+                            }//for thisNode
+
+                        // } // for i
+
+
+                              // console.log(lineData, hexRadius)
+
+
+
+                            var makeBorders = function(d) {
+
+                              var lineFunction = d3.line()
+                                  .x(function(d) {return d[0];})
+                                  .y(function(d) {return d[1];});
+                                  // .interpolate("linear");
+
+                                  d3.select(thisSvg).append("g")
+                                          .attr("id", "fiftypercentline_"+i)
+                                          .attr("class", "fiftypercentline")
+
+                              var Counter = 0;
+
+                              // console.log(thisisFiftyRow, getComp(), thisisFiftyRow-getComp(), lineData[thisisFiftyRow-getComp()])
+                              // console.log(thisisFiftyRow)
+
+                              // console.log(coordinateListForNodes.length,getComp())
+
+                              // if (Counter == 0 && lineData[Counter] != undefined) {
+                              var makePercentageLine = function(){
+                                if (lineData[Counter] != undefined 
+                                  && lineData[Counter][1] == hexRadius 
+                                  && lineData[Counter][0] <= 0 
+                                  && !isFiftydone) {
+
+                                      d3.select(thisSvg+ " g.fiftypercentline").append("path")
+                                          .attr("d", function(d) { 
+                                            return "M" +  (lineData[Counter][0]) + "," + (lineData[Counter][1]) + " L" + (lineData[Counter][0]-20) + "," + (lineData[Counter][1]); 
+                                          })
+                                          .attr("stroke", "black")
+                                          .attr("stroke-width", 2)
+                                          .attr("fill", "none");
+
+                                    d3.select(thisSvg+ " g.fiftypercentline").append("text")
+                                            .attr("class","annotation")
+                                            .attr("x",0)
+                                            .attr("y",0)
+                                            .attr("transform", function(d) { return "translate(" + (lineData[Counter][0]-50) + "," + (lineData[Counter][1]) + ")"; })
+                                            .attr("dy",2)
+                                            // .attr("text-anchor", "middle")
+                                            .text(function(d){
+                                              return "50%"
+                                            });
+
+
+                                            isFiftydone = true
+                                }
+                              } // end of makePercentageLine
+
+
+                                //Loop over the lineData and draw each line
+                                for (var thisLine = 0; thisLine < (lineData.length/2); thisLine++) {
+
+                                  // console.log(lineData[Counter][1] == hexRadius && lineData[Counter][0] <= 0)
+                                    d3.select(thisSvg+ " g.fiftypercentline").append("path")
+                                        .attr("d", lineFunction([lineData[Counter],lineData[Counter+1]]))
+                                        .attr("stroke", "black")
+                                        .attr("stroke-width", 2)
+                                        .attr("fill", "none");
+
+                                    makePercentageLine()
+
+                                    Counter = Counter + 2;
+
+                                } //for thisLine
+
+                                // console.log(Counter, i)
+                          }
+
+                              makeBorders(neighbourNodes)
+
+
+
+                        //////////////////////////////
+                        // BORDR MAKER ENDS         
+
+          
+            } // end of redraw
+              drawHexagons()
+
+
+
+
+        }
+
+        for (var ct = 0; ct < citiesArray.length; ct++){
+        // for (var Pr = 0; Pr < provinceArray.length; Pr++){
+
+
+
+          var makeAnnotations = function(){
+
+            var countComp = 0;
+            var multiplierX = 1;
+            var multiplierY = 1;
+            var moreIfEdge = 0;
+            // console.log(multiplierX, multiplierY)
+
+            for (var compCounter = 0; compCounter < citiesArray[ct][3]; compCounter++) {
+              countComp += provinceArray[compCounter][4]
+
+            }
+
+
+            getThisSvg = "#hexBox_" + citiesArray[ct][3] + " g"
+
+            // var thisNode = coordinateListForNodes[$(this).attr('data-id')]
+            var nodeNumber = citiesArray[ct][0] + countComp
+
+            citiesArray[ct].push(nodeNumber)
+            // console.log(MapRows*MapColumns-provinceArray[i][3])
+            var thisNode = coordinateListForNodes[nodeNumber]
+            // console.log(nodeNumber)
+
+            if (thisNode[2] <= 2) {
+              multiplierY *= -1
+              // console.log(multiplierY)
+            } 
+
+            if (thisNode[3] >= (MapColumns - 3) && citiesArray[ct][1] != "charlottetown" && citiesArray[ct][1] != "fredericton") {
+              multiplierX *= -1
+              moreIfEdge = data[citiesArray[ct][0]].place.length * 10
+              // console.log(multiplierX)
+            } 
+
+            //The data for our line
+            var lineData = [ 
+                  { "x": thisNode[0],   "y": thisNode[1]},
+                          // { "x": thisNode[0]-20,   "y": thisNode[1]-20},
+                          { "x": thisNode[0]+20*multiplierX,   "y": thisNode[1]-hexRadius*multiplierY}
+                          ];
+
+            //The SVG Container
+            var svgContainer = d3.select(getThisSvg);
+
+            d3.select("#annotationGroup_"+nodeNumber).remove()
+            d3.select("#annotationcircle_"+nodeNumber).remove()
+            d3.select("#rectOverlay_"+nodeNumber).remove()
+            d3.select("#textOverlay_"+nodeNumber).remove()
+
+            // Add the paths with different curves.
+            svgContainer.append("g")
+                .attr("id","annotationGroup_"+nodeNumber)  
+                .attr("class", "annotationGroup")
+                .append("path")
+                    .datum(lineData)
+                    .attr("class", "annotationline tag"+citiesArray[ct][3])
+                            .attr("stroke", "black")
+                            .attr("stroke-width", 2)
+                            .attr("fill", "none")
+                    .attr("d", d3.line()
+                               // .curve(d3.curveBasis)
+                               .curve(d3.curveLinear)
+                               .x(function(d) { return d.x; })
+                               .y(function(d) { return d.y; })
+                           );
+                    
+
+
+                svgContainer.append("g")
+                    .attr("id","annotationcircle_"+nodeNumber)  
+                    .append("circle")
+                    .attr("class", "annotationcircle")
+                        .attr("x",0)
+                        .attr("y",0)
+                        .attr("r",hexRadius/5)
+                            .attr("fill", "black")
+                        .attr("transform", function(d) { return "translate(" + (lineData[0].x) + "," + (lineData[0].y) + ")"; })
+
+
+
+                svgContainer.append("g")
+                    .attr("id","rectOverlay_"+nodeNumber)  
+                    .attr("class","rectOverlay")
+                    .append("rect")
+                        .attr("x",0)
+                        .attr("y",0)
+                        .attr("transform", function(d) { return "translate(" + (lineData[1].x-moreIfEdge) + "," + (lineData[1].y-12) + ")"; })
+                        .attr("width", function(){
+                          return data[citiesArray[ct][0]].place.length * 10
+                        })
+                        .attr("height", 20)
+                        .attr("fill","white")
+                        .attr("opacity",0.8)
+
+
+                svgContainer.append("g")
+                    .attr("id","textOverlay_"+nodeNumber)  
+                    .attr("class","textOverlay")  
+                    .append("text")
+                        .attr("class","annotation")
+                        .attr("x",0)
+                        .attr("y",0)
+                        .attr("transform", function(d) { return "translate(" + (lineData[1].x+5-moreIfEdge) + "," + (lineData[1].y) + ")"; })
+                        .attr("dy",2)
+                        // .attr("text-anchor", "middle")
+                        .text(function(d){
+                          return data[citiesArray[ct][0]].place
+                        });
+
+
+          
+          };
+
+
+          makeAnnotations()
+        };
+
+
+              
+
+
+      }
+
+      makeHexGraph()
+
+
+        // $('#chart').on('click', '.hexagon', function(){
+        $('#chart').on('mousemove', '.hexagon', function(){
+          // makeBorders(neighbourNodes)
+          d3.selectAll('.thisHex').classed('thisHex', false)
+          d3.selectAll('.outerHex').classed('outerHex', false)
+          var selectedNodes = '';
+
+          var thisID = $(this).attr('data-id')
+          // console.log(data[thisID].percent_women_on_council, data[thisID].place)
+          var thisProvinceID = $(this.parentElement).attr('data-id')
+          thisIsTheDataRow = thisID - provinceArray[thisProvinceID][1];
+          
+          // $("#hex" + thisID).css('fill', 'tomato').css('opacity', 1)
+          
+        // console.log(coordinateList[thisProvinceID][thisIsTheDataRow])
+          var thisCol = coordinateList[thisProvinceID][thisIsTheDataRow][3];
+          var thisRow = coordinateList[thisProvinceID][thisIsTheDataRow][2];  
+
+          var minID = provinceArray[thisProvinceID][1];
+          var maxID = minID + provinceArray[thisProvinceID][3];
+          
+          d3.select("#hex" + thisID).classed('thisHex', true)
+          // a.node().parentNode.appendChild(a.node());
+          // console.log(d3.select("#hex" + thisID).node().parentNode)
+          // d3.select(this.parentNode).appendChild(this);
+
+
+        })
+
+          //////// -------------------------------------------------------------------------------------------- tooltip start
+
+          $('#chart').on('mousemove', '.hexagon', function(){
+
+            var totalContent = "";
+
+            var thisRow = $(this).attr('data-id');
+
+            var thisProvinceID = $(this.parentElement).attr('data-id')
+
+            // console.log(provinceArray[thisProvinceID][1])
+            // console.log(coordinateList[thisProvinceID][thisRow-provinceArray[thisProvinceID][1]])
+
+            var nodeNumber = thisRow-provinceArray[thisProvinceID][1]
+
+            var thisNode = coordinateList[thisProvinceID][nodeNumber]
+                // console.log(thisNode)
+
+
+          var getThisSvg = "#hexBox_" + thisProvinceID + " g"
+
+
+          var svgContainer = d3.select(getThisSvg);
+
+
+            d3.selectAll('.selected').classed('selected',false)
+            $('#toolTipContent').html('');
+
+              entry = data[thisRow];
+
+              var percent = Math.ceil(entry.percent_women_on_council * 100)
+
+              if (entry.province == 'Y.T.') {
+                provinceSctring = 'Yukon';
+              } else {
+                provinceSctring = entry.province;
+              }
+
+
+
+              var content = '<div class="placebox"><p class="thisCity">' + entry.place + ', ' + provinceSctring + '</p><p class="percentWomen">' + percent + '%</p></div>';
+              // var content = '<div class="placebox"><div id="closebutton"><i class="icon fas fa-times fa-lg"></i></div><p class="thisCity">' + entry.place + ', ' + entry.province + '</p><p class="percentWomen">' + percent + '%</p></div>';
+              // console.log(content)
+          
+              $('.tooltipwrapper').append(content);
+                       
+              $("p:empty").remove();
+
+
+              var multiplierX = 1;
+              var multiplierY = 1;
+              var moreIfEdgeX = 0;
+              var moreIfEdgeY = ($('#toolTipContent').height()) + 35;
+
+              if (thisNode[2] <= 1) {
+                multiplierY *= -1
+                // moreIfEdgeY = 35
+                // console.log(multiplierY)
+              } 
+
+              if (thisNode[3] >= MapColumns - 3) {
+                multiplierX *= 2
+                moreIfEdgeX = $('#toolTipContent').width()-25
+                // moreIfEdgeX = data[citiesArray[ct][0]].place.length * 10
+                // console.log(multiplierX)
+              } 
+
+            $('#toolTipContent').css('display','block').css('left',event.pageX-25-moreIfEdgeX).css('top',event.pageY - (moreIfEdgeY))
+            
+            $('.squarepointer').css('display','block').css('left',event.pageX-10).css('top',event.pageY - 30)
+            
+            d3.select(this).classed('selected',true)
+
+
+
+
+
+          d3.select("#hex" + thisRow).node().parentNode.appendChild(d3.select("#hex" + thisRow).node());
+          
+          for (var pv = 0; pv < provinceArray.length; pv++){
+              d3.select("#fiftypercentline_" + pv).node().parentNode.appendChild(d3.select("#fiftypercentline_" + pv).node());
+            }
+          
+          for (var ct = 0; ct < citiesArray.length; ct++) {
+              d3.select("#annotationGroup_" + citiesArray[ct][4]).node().parentNode.appendChild(d3.select("#annotationGroup_" + citiesArray[ct][4]).node());
+              d3.select("#annotationcircle_" + citiesArray[ct][4]).node().parentNode.appendChild(d3.select("#annotationcircle_" + citiesArray[ct][4]).node());
+              d3.select("#rectOverlay_" + citiesArray[ct][4]).node().parentNode.appendChild(d3.select("#rectOverlay_" + citiesArray[ct][4]).node());
+              d3.select("#textOverlay_" + citiesArray[ct][4]).node().parentNode.appendChild(d3.select("#textOverlay_" + citiesArray[ct][4]).node());
+          }
+
+
+
+
+          })
+
+          $('#closebox').on('mousemove', function(){
+            d3.selectAll('.selected').classed('selected',false)
+            $('#toolTipContent').html('');
+            $('#toolTipContent').css('display','none')
+            $('.squarepointer').css('display','none')
+            $('.gradientCue').css('display','none')
+            d3.selectAll('.selected').classed('selected',false)
+            d3.selectAll('.thisHex').classed('thisHex', false)
+            d3.selectAll('.outerHex').classed('outerHex', false)
+            // console.log('closebox')
+          }); 
+
+          // $('#chart').on('mousemove', 'svg', function(){
+          $('#chart svg').on('mousemove', function(){
+            d3.selectAll('.selected').classed('selected',false)
+            $('#toolTipContent').html('');
+            $('#toolTipContent').css('display','none')
+            $('.squarepointer').css('display','none')
+            $('.gradientCue').css('display','none')
+            d3.selectAll('.selected').classed('selected',false)
+            d3.selectAll('.thisHex').classed('thisHex', false)
+            d3.selectAll('.outerHex').classed('outerHex', false)
+            // console.log('chart svg')
+          }); 
+          
+
+
+        function resize(){
+                var message = {'resize': 
+                        {
+                          'iframe':'hexagon-municipality-iframe',
+                          'height': document.getElementsByClassName('graphic-wrapper')[0].offsetHeight + 30
+                        }
+                      };
+              parent.postMessage(message, "*");
+          };
+
+          $(window).load(function(){
+              resize();
+              makeHexGraph()
+          });
+
+          $(window).resize(function(){
+              resize();
+              makeHexGraph()
+          });
+
+          document.addEventListener("touchstart", function(){}, true);
+
+
+      });
+
+
+
+
+
+
+
+    </script>
+
+</body>
+</html>

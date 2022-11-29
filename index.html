@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Toronto Star</title>
+    <script src="https://misc.thestar.com/interactivegraphic/libraries/d3v5.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather+Sans:300,400' rel='stylesheet' type='text/css'>
+
+    <style>
+
+
+      body {
+          margin: 0;
+           -webkit-tap-highlight-color: rgba(0,0,0,0);
+           background-color: #f8f8f8;
+        }
+
+      * {
+          box-sizing: border-box;
+        }
+
+      .clearfix:after {
+          visibility: hidden;
+          display: block;
+          font-size: 0;
+          content: " ";
+          clear: both;
+          height: 0;
+          }
+          
+      .clearfix {
+          display: block;
+          }
+
+      .database-outer-wrapper {
+        padding: 1px 16px;
+        overflow: hidden;
+         margin: 0 auto;
+      }
+
+      .database-wrapper {
+        max-width: 600px;
+        margin: 24px auto 8px;
+        padding: 48px 0 96px;
+        border-top: 2px solid #cfcfcf;
+        border-bottom: 2px solid #cfcfcf;
+        font-family: 'Merriweather Sans',helvetica neue, helvetica, arial, sans-serif;
+      }
+
+      p.databasehead {
+          margin: 0;
+          padding-bottom: 4px;
+          color: #777;
+          line-height: 1.3em;
+          font-size: 22px;
+          letter-spacing: 0.8px;
+          /*font-weight: bold;*/
+      }
+
+      p.introtext {
+        margin: 0;
+        line-height: 1.3em;
+        color: #777;
+        font-size: 18px;
+        padding-bottom: 4px;
+      }
+
+      p.introtext a {
+      	color: #0072bc;
+      }
+
+      .searchbox {
+        margin: 56px auto;
+        width: 100%;
+      }
+
+      .searchbox-title {
+        margin: 0;
+        padding-bottom: 12px;
+        font-size: 16px;
+        line-height: 1.2em;
+        letter-spacing: 0.8px;
+        text-transform: lowercase;
+        font-variant: small-caps;
+        color: #777;
+        font-style: italic;
+        font-weight: 300;
+      }
+
+      #filterOn {
+        font-size: 18px;
+        line-height: 1.4em;
+        border-radius: 4px;
+        width: 100%;
+        border: 1px solid #cfcfcf;
+        margin-bottom: 8px;
+        padding: 8px;
+        display: block;
+        color: #404040;
+        text-transform: uppercase;
+        background-color: #f8f8f8;
+        font-family: 'Merriweather Sans',helvetica neue, helvetica, arial, sans-serif;
+      }
+
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+          color: #bbb;
+          opacity: 1; /* Firefox */
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+          color: #bbb;
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+          color: #bbb;
+        }
+
+      #filterOn:focus {
+        border-color: #333;
+      }
+
+      .filterListContainer {
+        width: 100%;
+        height: 0;
+        position: relative;
+
+      }
+
+      #filterList {
+        margin: 0;
+        width: 100%;
+        border: 1px solid #777;
+        height: auto;
+        max-height: 185px;
+        overflow-y: scroll;
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        background-color: #fff;
+        border-radius: 4px;
+        padding: 8px;
+       
+       /* text-transform: uppercase;*/
+        background-color: #f8f8f8;
+        -webkit-overflow-scrolling: touch;
+      }
+
+
+
+      .activefilter {
+        display: block !important;
+      }
+
+      .filterListItem {
+        cursor: pointer;
+        padding: 8px;
+        font-size: 15px;
+        line-height: 1.2em;
+        color: #666;
+        text-transform: uppercase;
+      }
+
+      .filterListItem span {
+         font-size: 15px;
+      }
+
+      .filterListItem:hover {
+        background: #e9f1f5;
+      }
+
+
+
+
+      /*///////// CITY BOX //////////*/
+
+      .buildingbox {
+        transition: opacity 0.3s ease-out;
+        opacity: 0; 
+        height: 0;
+        overflow: hidden;
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .active-buildingbox {
+        opacity: 1;
+        height: auto;
+      }
+
+      .buildingbox p {
+        margin: 0;
+        font-size: 18px;
+        line-height: 1.3em;
+        color: #555;
+      }
+
+      .topline {
+        width: 100%;
+        padding-bottom: 0;
+        margin-bottom: 16px;
+        border-bottom: 1px solid #cfcfcf;
+      }
+
+      .statline {
+        width: 100%;
+        display: flex;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid #cfcfcf;
+      }
+
+
+      .topbox p {
+        font-size: 18px;
+        letter-spacing: 0.4px;
+        line-height: 1.2em;
+        color: #666;
+        width: 100%;
+      }
+
+      .placebox {
+        width: 100%;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid #cfcfcf;
+      }
+
+      .placebox p {
+        color: #777;
+        font-size: 24px;
+        line-height: 1em;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+
+      p.howmany {
+          color: #777;
+          font-size: 22px;
+          letter-spacing: 0.5px;
+          display: block;
+          padding-bottom: 16px;
+          line-height: 1.2em;
+          font-weight: 300;
+      }
+
+      p.howmany span.variablespan {
+        font-size: 26px;
+        line-height: 1em;
+        letter-spacing: 0.5px;
+        color: #019988;
+        font-family: helvetica neue, helvetica, arial, sans-serif;
+        font-weight: 400;
+      }
+
+      p.howmany span#councilsize {
+        /*color: #777;*/
+      }
+
+      .sizebox {
+        width: 50%;
+        position: relative;
+        min-height: 70px;
+      }
+
+      .iconbox {
+        width: 100%;
+        display: flex;
+        padding-bottom: 16px;
+        align-items: center;
+        justify-content: flex-start;
+      }
+
+      .icon {
+         max-width: 48px;
+         width: 48px;
+         flex-basis: auto;
+        /* min-width: 18px;*/
+         margin: 0 1px 4px;
+         flex-shrink: 2;
+      }
+
+      .icon img {
+        width: 100%;
+        display: block;
+      }
+
+      .hiddenspan {
+        display: none;
+      }
+
+
+
+      .toplinebox {
+        flex-basis: 50%;
+        border-right: 1px solid #cfcfcf;
+        margin-right: 32px;
+        padding-right: 32px;
+        height: 68px;
+        position: relative;
+        z-index: 99;
+      }
+
+
+      .toplinebox:last-of-type {
+         border-right: none;
+         margin-right: 0;
+         padding-right: 0;
+         flex-basis: 45%;
+      }
+
+      p.description {
+        color: #777;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        display: block;
+        padding-bottom: 2px;
+        line-height: 1.2em;
+        font-weight: 300;
+      }
+
+
+      p.stat {
+        position: absolute;
+        bottom: 0;
+        font-size: 26px;
+        line-height: 1em;
+        letter-spacing: 0.5px;
+        color: #777;
+        font-family: helvetica neue, helvetica, arial, sans-serif;
+      }
+
+      .photobox img {
+        display: block;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .turnoutbox {
+        display: none;
+      }
+
+      .active-turnoutbox {
+        display: block;
+      }
+
+
+@media (max-width: 590px) {
+  p.description {
+    font-size: 12px;
+  }
+
+  .toplinebox {
+    height: 72px;
+
+  }
+
+}
+
+
+@media (max-width: 420px) {
+
+   .placebox p {
+    font-size: 20px;
+   }
+
+   p.howmany {
+    font-size: 15px;
+    padding-bottom: 8px;
+   }
+
+   .iconbox {
+    padding-bottom: 8px;
+   }
+
+   p.howmany span.variablespan {
+    font-size: 19px;
+  }
+
+  p.description {
+    font-size: 11px;
+  }
+
+  p.stat {
+    font-size: 19px;
+  }
+
+  .toplinebox {
+    margin-right: 8px;
+    padding-right: 8px;
+    height: 64px;
+  }
+
+  .toplinebox:last-of-type {
+    flex-basis: 52%;
+  }
+
+
+
+
+
+
+}
+
+@media (max-width: 300px) {
+
+  p.description {
+    font-size: 10px;
+    line-height: 1.3em;
+  }
+
+  p.stat {
+    font-size: 16px;
+  }
+
+   p.howmany span.variablespan {
+    font-size: 16px;
+  }
+
+
+
+}
+
+
+p.graphic-bottom__graphic-source {
+  margin: 0 0 40px;
+  padding-bottom: 5px;
+  font-size: 12px;
+  line-height: 1.3em;
+  font-family: "Merriweather Sans", Helvetica, Arial, sans-serif;
+  color: #aaaaaa;
+  text-rendering: optimizeLegibility;
+  text-transform: uppercase; }
+  @media (min-width: 526px) {
+    p.graphic-bottom__graphic-source {
+      max-width: 65%;
+      vertical-align: top;
+      float: left; } }
+
+</style>
+
+</head>
+
+  <body>
+    <div class="database-outer-wrapper">
+    <div class="database-wrapper">
+
+      <div class="searchbox">
+        <p class="databasehead">Search our database to see the number of women on your local council</p>
+        <p class="searchbox-title">Please do not include accents in your search</p>
+        <input autocomplete="off" type="text" id="filterOn" placeholder="City name" />
+
+        <div class="filterListContainer">
+          <ul id="filterList"></ul>
+        </div>
+      </div>
+
+      <div class="buildingbox">
+
+            <div class="photobox"></div>
+
+            <div class="placebox">
+                <p><span id="city"></span>, <span id="prov"></span></p>
+                
+            </div>
+            <div class="topline">
+             
+          
+              <p class="howmany">There <span class="isare" id="are">are</span><span class="isare hiddenspan" id="is">is</span> <span class="variablespan" id="numberwomen"></span> women on a council of <span class="variablespan" id="councilsize"></span>.</p>
+              <div class="iconbox"></div>
+              <p class="howmany">That works out to <span class="variablespan" id="pctwomen"></span>.</p>
+              
+            </div>
+
+            <div class="statline">
+              <div class="toplinebox">
+                <p class="description">Mayor’s gender</p>
+                <p class="stat" id="mayorgender"></p>
+              </div>
+              <div class="toplinebox">
+                <p class="description">City’s population</p>
+                <p class="stat" id="pop"></p>
+              </div>
+              <div class="toplinebox">
+                <p class="description">Avg. no. of residents per councillor</p>
+                <p class="stat" id="residentspercouncillor"></p>
+              </div>
+
+            </div>
+
+            <div class="statline">
+              <div class="toplinebox turnoutbox">
+                <p class="description">City’s voter turnout in last election</p>
+                <p class="stat" id="voterturnout"></p>
+              </div>
+
+          
+              <div class="toplinebox">
+                <p class="description">City’s visible minority population</p>
+                <p class="stat" id="vismin"></p>
+              </div>
+
+              <div class="toplinebox">
+                <p class="description">City’s indigenous population</p>
+                <p class="stat" id="indig"></p>
+              </div>
+            </div>
+            <p class="graphic-bottom__graphic-source" id="source">Sources: CMB and Statistics Canada</p>
+
+
+      </div>
+
+
+  </div>
+  
+  </div>
+
+
+  <script>
+
+    ////DEFINE ALL THE VARIABLES YOU'LL NEED FOR YOUR DATA////
+
+    var thiscity;
+    var thisid;
+
+    var pop;
+    var councilsize;
+    var numberofwomen;
+    var numberofmen;
+
+    var mayorgender;
+    var pctwomen;
+    var residentspercouncillor;
+    var voterturnout;
+    var vismin;
+    var indig;
+
+    var provname = d3.scaleOrdinal().domain(["N.L.","P.E.I.","N.S.","N.B.","Que.","Ont.","Man.","Sask.","Alta.","B.C.","Y.T.","N.W.T."]).range(["Newfoundland","Prince Edward Island","Nova Scotia","New Brunswick","Quebec","Ontario","Manitoba","Saskatchewan","Alberta","British Columbia","Yukon","Northwest Territories"]);
+
+    var icon1 = '<div class="icon"><img src="figure1.svg"></div>'
+
+    var icon2 = '<div class="icon"><img src="figure2.svg"></div>'
+
+
+    ////LOAD ALL THE DATA////
+  
+    d3.csv("data.csv").then(function(data){
+
+  
+      // onFilter();
+
+
+      ////DELAY FUNCTION SO THE FILTER FUNCTION WON'T EXECUTE UNTIL SHORTLY AFTER THE USER STOPS TYPING////
+
+      function delay(callback, ms) {
+        var timer = 0;
+        return function() {
+          var context = this, args = arguments;
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            callback.apply(context, args);
+          }, ms || 0);
+        };
+      }
+
+
+     ////FIRES THE FILTER FUNCTION ON KEYUP WITH DELAY////
+
+      d3.select('#filterOn').on('keyup', delay(function (e) {
+        onFilter();
+      }, 500));
+      
+
+      ////THE FILTER FUNCTION////
+      
+      function onFilter(){
+
+        var filterText = d3.select('#filterOn').property('value').toLowerCase();
+
+
+        filteredData = data;
+
+        if (filterText != ""){
+          var filteredData = data.filter(function(d){
+            return (d.place.indexOf(filterText) >= 0);
+          });
+        };
+       
+
+        ////FILTERS THE FILTERED LIST BELOW THE SEARCH BAR////
+
+        d3.select('#filterList').html(
+          filteredData.map(function(d,i){
+            return '<li class="filterListItem" data-id="'+ d.rec +'">' + d.place + ', <span>' + d.province +  '</span></li>';
+
+          }).join("")
+        );
+
+
+        ////IF ELSE TO SHOW OR HIDE THE FILTERED LIST////
+
+        if ( filterText.length > 2 && filteredData.length != 0) {
+                    d3.select('#filterList').classed('activefilter',true);
+                  }
+
+        else if ( filterText.length > 2 && filteredData.length === 0) {
+                    d3.select('#filterList').classed('activefilter',true).html("<li class='filterListItemNone'>No city found</li>");
+                  }
+
+        else { d3.select('#filterList').classed('activefilter',false);};
+
+
+        ////BRINGS UP THE INFORMATION WHEN THE USER CLICKS ON ONE OF THE FILTERED OPTIONS////
+
+        d3.selectAll('.filterListItem').on('click', runQuery);
+
+        d3.select('#filterOn').on("keydown", function() {
+              if (d3.event.keyCode === 13 && filteredData.length == 1) {
+
+                      var thisid = d3.select('.filterListItem').attr('data-id');
+
+                      d3.select('#filterList').classed('activefilter',false);
+                      d3.select('.fulllistbox').classed('hiddenlist',true);
+                      document.getElementById('filterOn').value = '';
+
+                      loadData(thisid);
+                      this.blur();
+                     
+               }
+            })
+
+       
+
+      };
+
+
+
+ ////THE QUERY FUNCTION TO DEFINE THE VARIABLES TO FIND THE SELECTED QUERY////
+
+ function runQuery(){
+
+          thisid = d3.select(this).attr('data-id');
+
+          d3.select('#filterList').classed('activefilter',false);
+          d3.select('.fulllistbox').classed('hiddenlist',true);
+          document.getElementById('filterOn').value = '';
+
+          ////FIRES THE LOAD FUNCTION////
+
+          loadData(thisid)
+
+
+      };
+
+
+////THE LOAD FUNCTION////
+
+  function loadData(m){
+
+        ////FILLS IN THE VARIABLES IN THE HTML SPANS ABOVE////
+
+        councilsize = data[m].council_size;
+        numberofwomen = d3.format('.0f')(councilsize * data[m].percent_women_on_council);
+        numberofmen = councilsize - numberofwomen;
+
+        if (numberofwomen == 1) {
+            d3.select('#is').classed('hiddenspan',false);
+            d3.select('#are').classed('hiddenspan',true);
+        }
+
+        else {
+            d3.select('#are').classed('hiddenspan',false);
+            d3.select('#is').classed('hiddenspan',true);
+        };
+
+        d3.select('#city').html(data[m].place);
+        d3.select('#prov').html(provname(data[m].province));
+
+        d3.select('#numberwomen').html(numberofwomen);
+        d3.select('#councilsize').html(councilsize);
+
+        d3.select('#pctwomen').html(d3.format('.0f')(data[m].percent_women_on_council*100) + '<span>%</span>');
+
+        d3.select('#pop').html(data[m].pop_2016);
+        
+        d3.select('#mayorgender').html(data[m].leadership_gender);
+        d3.select('#residentspercouncillor').html(data[m].residents_per_councilor);
+        d3.select('#vismin').html(data[m].vismin);
+        d3.select('#indig').html(data[m].indig);
+
+        var icons = "";
+
+        for (var i = 0; i < numberofwomen; i++) {
+           icons += icon1;
+        };
+
+        for (var i = 0; i < numberofmen; i++) {
+           icons += icon2;
+        }
+
+       
+
+
+        d3.select('.iconbox').html(icons);
+
+
+
+        if (data[m].img != undefined) {
+          d3.select('.photobox').html('<img src="' + data[m].img + '">');
+        };
+
+
+
+        if (data[m].voter_turnout != '') {
+          d3.select('#voterturnout').html(data[m].voter_turnout);
+          d3.select('.turnoutbox').classed('active-turnoutbox',true)
+        }
+
+        else {
+          d3.select('.turnoutbox').classed('active-turnoutbox',false);
+        }
+
+    
+
+
+        ////SHOWS THE DATA IN THE HTML////
+
+        d3.select('.buildingbox').classed('active-buildingbox',true);
+
+        ////RESIZES THE IFRAME ACCORDINGLY FOR THE DATA////
+
+        resize();
+
+
+        setTimeout(function(){ resize(); }, 500);
+        setTimeout(function(){ resize(); }, 2000);
+
+
+
+  };
+
+
+});
+
+
+
+document.addEventListener("touchstart", function(){}, true);
+
+
+ function resize(){
+        var message = {'resize': 
+                  {
+                    'iframe':'gendercouncildatabase',
+                    'height': document.getElementsByClassName('database-outer-wrapper')[0].offsetHeight + 20
+                  }
+                };
+       
+        parent.postMessage(message, "*");
+    };
+
+    window.addEventListener('load', function() {
+        resize();
+    });
+
+    window.addEventListener("resize", function(){
+        resize();
+    });
+
+
+    
+</script>
+</body>
+</html>
